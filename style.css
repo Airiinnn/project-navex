@@ -194,7 +194,6 @@ h1 {
     justify-content: center;
     align-items: center;
     text-shadow: 0 4px 5px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
 }
 
 .radiogroup input[type="radio"] {
@@ -317,4 +316,10 @@ footer {
 #footer-text p a {
     color: #b3b3b3;
     text-decoration: none;
+}
+
+/* Water */
+#water-feature {
+    height: auto;
+    width: auto;
 }
