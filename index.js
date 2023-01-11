@@ -4,10 +4,10 @@ let uniqueID = 1;
 let markers = [];
 var trainingAreas = {};
 const SINGAPORE_BOUNDS = {
-    north: 1.466878,
-    south: 1.211860,
-    west: 103.584676,
-    east: 104.114079,
+    north: 1.566878,
+    south: 1.111860,
+    west: 103.534676,
+    east: 104.164079,
 }
 
 function initDropdown() {
@@ -432,4 +432,34 @@ function getNDS(response) {
     }
 
     new generateTable(points, azimuths, ptDists);
+}
+
+// Point (LatLng) to pixel coordinate on Google Static Map
+const OFFSET = 268435456;
+const RADIUS = OFFSET / Math.PI;
+
+function LToX(x) {
+    return Math.round(OFFSET + RADIUS * x * Math.PI / 180);
+}
+
+function LToY(y) {
+    return Math.round(OFFSET - RADIUS * Math.log((1 + Math.sin(y * Math.PI / 180)) / (1 - Math.sin(y * Math.PI / 180))) / 2);
+}
+
+function toPixelCoord(x, y, xcenter, ycenter, zoomlvl) {
+    const xPixel = ((LToX(x) - LToX(xcenter)) >> (21 - zoomlvl)) + 640;
+    const yPixel = ((LToY(y) - LToY(ycenter)) >> (21 - zoomlvl)) + 640;
+    return [xPixel, yPixel];
+}
+
+const pixelCoord = toPixelCoord(1.414079, 103.776392, 1.412811, 103.774780, 15);
+console.log(pixelCoord);
+
+window.onload = function() {
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    var img = document.getElementById("water-features");
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    ctx.fillStyle = "#00ff00";
+    ctx.fillRect(pixelCoord[0], pixelCoord[1], 1, 1);
 }
